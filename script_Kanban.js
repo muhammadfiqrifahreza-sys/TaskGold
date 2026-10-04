@@ -13,7 +13,7 @@ const seedTasks = () => [
   { id: 2, title: 'Quiz Bab 3 Statistika',     course: 'Statistika',        due: addDays(5),  done: 0, total: 2, status: 'todo' },
   { id: 3, title: 'Rancang Topologi Jaringan', course: 'Jaringan Komputer', due: addDays(11), done: 0, total: 3, status: 'todo' },
   { id: 4, title: 'Landing Page Portofolio',   course: 'Pemrograman Web',   due: addDays(4),  done: 3, total: 5, status: 'prog' },
-  { id: 5, title: 'Makalah Kecerdasan Buatan', course: 'Etika Profesi',     due: addDays(8),  done: 2, total: 6, status: 'prog' },
+  { id: 5, title: 'Download Calibre dan Obsidian', course: 'Telaah Kurikulum',     due: addDays(8),  done: 2, total: 6, status: 'prog' },
   { id: 6, title: 'Resume Jurnal Algoritma',   course: 'Struktur Data',     due: addDays(-3), done: 3, total: 3, status: 'done' },
   { id: 7, title: 'Tugas SQL Join',            course: 'Basis Data',        due: addDays(-6), done: 4, total: 4, status: 'done' },
 ];
