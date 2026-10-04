@@ -313,3 +313,19 @@ addForm.addEventListener('submit', e => {
   addDlg.close();
   toast('Tugas ditambahkan');
 });
+
+// Dialog Pindah (layar sentuh)
+const moveDlg = $('#moveDlg');
+function openMove(id) {
+  const t = tasks.find(x => x.id === id);
+  $('#moveTitle').textContent = `${t.title} - ${t.course}`;
+  $('#moveOpts').replaceChildren(...Object.entries(STATUS).map(([key, label]) => {
+    const b = el('button', '', label);
+    b.type = 'button';
+    if (key === t.status) { b.setAttribute('aria-current', 'true'); b.append(el('small', '', 'Saat ini')); }
+    b.addEventListener('click', () => { moveDlg.close(); moveTask(id, key); });
+    return b;
+  }));
+  moveDlg.showModal();
+}
+
