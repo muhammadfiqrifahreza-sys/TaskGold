@@ -165,3 +165,14 @@ const renderStatistik = () => {
     card.append(head, el('b', '', counts[i]), note);
     return card;
   }));
+
+  // deadline terdekat (3 tugas belum selesai)
+  const upcoming = tasks.filter(t => t.status !== 'done').sort((a, b) => a.due.localeCompare(b.due)).slice(0, 3);
+  $('#deadlines').replaceChildren(...(upcoming.length ? upcoming.map(t => {
+    const left = daysLeft(t.due), li = el('li'), info = el('div');
+    info.append(el('strong', '', t.title), el('small', '', t.course));
+    li.append(info, el('span', '', fmtDate(t.due)),
+      el('em', left < 0 ? 'late' : '', left < 0 ? `Terlambat ${-left} hari` : left === 0 ? 'Hari ini' : `${left} hari lagi`));
+    return li;
+  }) : [el('li', 'empty-note', 'Tidak ada deadline. Semua tugas selesai!')]));
+};
