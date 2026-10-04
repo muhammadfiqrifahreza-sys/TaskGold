@@ -285,3 +285,31 @@ board.addEventListener('click', e => {
   const id = Number(btn.closest('.card').dataset.id);
   ({ bump: bumpSubtask, delete: deleteTask, move: openMove })[btn.dataset.action](id);
 });
+
+// Dialog Tambah Tugas
+const addDlg = $('#addDlg'), addForm = $('#addForm'), errBox = $('#formError');
+function openAdd(status = 'todo') {
+  addForm.reset();
+  addForm.status.value = status;
+  addForm.due.min = addDays(0);
+  errBox.textContent = '';
+  addDlg.showModal();
+  $('#fTitle').focus();
+}
+const showError = (msg, field) => { errBox.textContent = msg; field.focus(); };
+
+addForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const f = new FormData(addForm);
+  const title = f.get('title').trim(), course = f.get('course').trim(), due = f.get('due');
+  const total = Math.min(20, Math.max(1, Number(f.get('total')) || 1));
+  if (title.length < 3) return showError('Judul minimal 3 karakter.', addForm.title);
+  if (!course)          return showError('Isi mata kuliah.', addForm.course);
+  if (!due)             return showError('Pilih tanggal tenggat.', addForm.due);
+
+  const status = f.get('status');
+  tasks.push({ id: Date.now(), title, course, due, total, status, done: status === 'done' ? total : 0 });
+  save(); render();
+  addDlg.close();
+  toast('Tugas ditambahkan');
+});
