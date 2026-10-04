@@ -1,6 +1,6 @@
 'use strict';
 // Data (Array of Objects)
-const STORAGE_KEY = 'taskgold.v2';
+const STORAGE_KEY = 'taskgold.v3';
 const STATUS = { todo: 'To Do', prog: 'In Progress', done: 'Selesai' };
 const COLOR = { todo: 'var(--todo)', prog: 'var(--prog)', done: 'var(--done)' };
 const addDays = n => {   // tanggal lokal (bukan UTC) agar tidak meleset sehari
