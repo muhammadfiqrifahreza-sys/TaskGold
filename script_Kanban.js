@@ -1,5 +1,5 @@
 'use strict';
-/* ===== Data (Array of Objects) ===== */
+// Data (Array of Objects)
 const STORAGE_KEY = 'taskgold.v2';
 const STATUS = { todo: 'To Do', prog: 'In Progress', done: 'Selesai' };
 const COLOR = { todo: 'var(--todo)', prog: 'var(--prog)', done: 'var(--done)' };
@@ -26,7 +26,7 @@ const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 
 let view = 'board', filterCourse = 'Semua', query = '', activeTab = 'todo';
 
-/* ===== Helpers ===== */
+// Helpers
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const toDate = iso => new Date(iso + 'T00:00:00');
@@ -51,7 +51,7 @@ const toast = msg => {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 };
 
-/* ===== Aksi data ===== */
+// Aksi data
 const moveTask = (id, status) => {
   const t = tasks.find(x => x.id === id);
   if (!t || t.status === status) return;
@@ -75,7 +75,7 @@ const bumpSubtask = id => {
   save(); render();
 };
 
-/* ===== Render: Papan Tugas ===== */
+// Render: Papan Tugas
 const buildCard = t => {
   const card = el('article', `card${t.status === 'done' ? ' is-done' : ''}`);
   card.draggable = true;
@@ -144,3 +144,24 @@ const renderBoard = () => {
     return b;
   }));
 };
+
+// Render: Statistik
+const renderStatistik = () => {
+  // distribusi status
+  const total = tasks.length || 1;
+  const counts = Object.keys(STATUS).map(k => tasks.filter(t => t.status === k).length);
+  let acc = 0;
+  const stops = Object.keys(STATUS).map((k, i) => {
+    const from = acc; acc += (counts[i] / total) * 100;
+    return `${COLOR[k]} ${from}% ${acc}%`;
+  });
+  $('#stack').style.background = tasks.length ? `linear-gradient(90deg, ${stops.join(',')})` : '';
+  $('#statusCards').replaceChildren(...Object.entries(STATUS).map(([k, label], i) => {
+    const card = el('div', 'scard'), head = el('span', 'sl'), dot = el('i', 'dot');
+    dot.style.setProperty('--c', COLOR[k]);
+    head.append(dot, label);
+    const note = el('small', '', `tugas - ${Math.round(counts[i] / total * 100)}%`);
+    note.style.color = COLOR[k];
+    card.append(head, el('b', '', counts[i]), note);
+    return card;
+  }));
