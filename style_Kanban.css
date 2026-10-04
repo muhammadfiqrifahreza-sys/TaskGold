@@ -11,3 +11,19 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:
 button,input,select{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Sidebar */
+.view{display:none;flex-direction:column;gap:var(--s3)}
+body[data-view=board] #view-board,body[data-view=stat] #view-stat,body[data-view=course] #view-course{display:flex}
+body:not([data-view=board]) .search{display:none}
+.sidebar{background:var(--surf);padding:28px 20px;display:flex;flex-direction:column;gap:var(--s3);
+  position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700;color:var(--gold2)}
+.logo-mark{width:36px;height:36px;border-radius:10px;background:var(--gold);color:var(--ink);display:grid;place-items:center}
+nav{display:flex;flex-direction:column;gap:6px;flex:1}
+nav a{padding:11px 12px;border-radius:10px;color:var(--mut);text-decoration:none;font-weight:500;transition:background .2s}
+nav a:hover{background:var(--card)}
+nav a[aria-current=page]{background:rgba(212,175,55,.14);color:var(--gold);font-weight:600}
+.profile{display:flex;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.profile small{display:block;color:var(--mut);font-size:11px}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--ink);display:grid;place-items:center;font-weight:700;font-size:13px}
