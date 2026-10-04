@@ -217,3 +217,28 @@ const renderCourses = () => {
     return card;
   }));
 };
+
+// Navigasi antar layar
+const TITLES = {
+  board: ['Papan Tugas', () => new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })],
+  stat: ['Statistik', () => 'Ringkasan progres tugas semester 5'],
+  course: ['Mata Kuliah', () => `${new Set(tasks.map(t => t.course)).size} mata kuliah semester ini`],
+};
+const render = () => {
+  document.body.dataset.view = view;
+  $$('nav a[data-view]').forEach(a => a.dataset.view === view ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+  $('#pageTitle').textContent = TITLES[view][0];
+  $('#pageSub').textContent = TITLES[view][1]();
+  statCards(); renderChips(); renderBoard(); renderStatistik(); renderCourses();
+};
+$('nav').addEventListener('click', e => {
+  const a = e.target.closest('a');
+  if (!a) return;
+  e.preventDefault();
+  if (a.dataset.soon !== undefined) return toast('Pengaturan belum tersedia');
+  view = a.dataset.view; render();
+});
+$('#courses').addEventListener('click', e => {
+  const b = e.target.closest('[data-course]');
+  if (b) { filterCourse = b.dataset.course; view = 'board'; render(); }
+});
