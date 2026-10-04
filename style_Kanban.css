@@ -85,3 +85,17 @@ h1{font-size:28px}
 .tools button:hover{border-color:var(--gold);color:var(--gold)}
 .tools .del:hover{border-color:var(--red);color:var(--red)}
 footer{color:var(--mut);font-size:12px;margin-top:auto}
+
+/* Statistik */
+.panel{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:18px}
+.panel h2{font-size:20px}
+.stack{height:28px;border-radius:14px;background:var(--line)}
+.status-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.scard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.scard .sl{display:flex;align-items:center;gap:8px;color:var(--mut);font-weight:500}
+.scard b{font-size:44px;line-height:1}.scard small{font-size:13px;font-weight:500}
+.deadlines{list-style:none;padding:0;display:flex;flex-direction:column;gap:10px}
+.deadlines li{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:12px;padding:12px 14px}
+.deadlines li div{flex:1}.deadlines small{display:block;color:var(--mut);font-size:12px}
+.deadlines em{font-style:normal;font-weight:600;color:var(--gold)}.deadlines em.late{color:var(--red)}
+.empty-note{color:var(--mut);font-size:13px}
