@@ -242,3 +242,46 @@ $('#courses').addEventListener('click', e => {
   const b = e.target.closest('[data-course]');
   if (b) { filterCourse = b.dataset.course; view = 'board'; render(); }
 });
+
+// Drag & drop
+const board = $('#board');
+let draggedId = null;
+board.addEventListener('dragstart', e => {
+  const card = e.target.closest('.card');
+  if (!card) return;
+  draggedId = Number(card.dataset.id);
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', draggedId);
+  requestAnimationFrame(() => card.classList.add('dragging'));
+});
+board.addEventListener('dragend', () => {
+  $$('.dragging').forEach(c => c.classList.remove('dragging'));
+  $$('.column.over').forEach(c => c.classList.remove('over'));
+});
+board.addEventListener('dragover', e => {
+  const col = e.target.closest('.column');
+  if (!col || draggedId === null) return;
+  e.preventDefault();
+  $$('.column.over').forEach(c => c !== col && c.classList.remove('over'));
+  col.classList.add('over');
+});
+board.addEventListener('dragleave', e => {
+  const col = e.target.closest('.column');
+  if (col && !col.contains(e.relatedTarget)) col.classList.remove('over');
+});
+board.addEventListener('drop', e => {
+  const col = e.target.closest('.column');
+  if (!col || draggedId === null) return;
+  e.preventDefault();
+  col.classList.remove('over');
+  moveTask(draggedId, col.dataset.status);
+  draggedId = null;
+});
+board.addEventListener('click', e => {
+  const addBtn = e.target.closest('[data-add]');
+  if (addBtn) return openAdd(addBtn.dataset.add);
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const id = Number(btn.closest('.card').dataset.id);
+  ({ bump: bumpSubtask, delete: deleteTask, move: openMove })[btn.dataset.action](id);
+});
