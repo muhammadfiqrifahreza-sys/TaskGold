@@ -71,7 +71,35 @@
         <article class="panel"><h2>Deadline terdekat</h2><ul class="deadlines" id="deadlines"></ul></article>
       </section>
 
-      
+      <!-- Layar 3: Mata Kuliah -->
+      <section class="view" id="view-course" aria-label="Mata Kuliah">
+        <div class="courses" id="courses"></div>
+      </section>
+    </main>
+  </div>
+
+  <button class="fab" id="fab" type="button" aria-label="Tambah tugas">+</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="addDlg">
+    <form id="addForm" novalidate>
+      <h2>Tambah Tugas Baru</h2>
+      <label>Judul Tugas<input name="title" id="fTitle" placeholder="Contoh: Laporan Praktikum" required></label>
+      <label>Mata Kuliah<input name="course" list="courseList" placeholder="Contoh: Basis Data" required>
+        <datalist id="courseList"></datalist></label>
+      <div class="row">
+        <label>Tenggat<input type="date" name="due" required></label>
+        <label>Status Awal
+          <select name="status"><option value="todo">To Do</option><option value="prog">In Progress</option><option value="done">Selesai</option></select></label>
+      </div>
+      <label>Jumlah Subtugas<input type="number" name="total" min="1" max="20" value="3"></label>
+      <p class="error" id="formError" role="alert"></p>
+      <div class="foot">
+        <button type="button" class="btn ghost-btn" id="btnCancel">Batal</button>
+        <button type="submit" class="btn primary">Simpan Tugas</button>
+      </div>
+    </form>
+  </dialog>
     
 </body>
 </html>
