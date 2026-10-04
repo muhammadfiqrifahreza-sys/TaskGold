@@ -50,3 +50,27 @@ const toast = msg => {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 };
+
+/* ===== Aksi data ===== */
+const moveTask = (id, status) => {
+  const t = tasks.find(x => x.id === id);
+  if (!t || t.status === status) return;
+  if (status === 'done') t.done = t.total;
+  t.status = status;
+  save(); render();
+  toast(`"${t.title}" dipindah ke ${STATUS[status]}`);
+};
+const deleteTask = id => {
+  const t = tasks.find(x => x.id === id);
+  if (!t || !confirm(`Hapus tugas "${t.title}"?`)) return;
+  tasks = tasks.filter(x => x.id !== id);
+  save(); render(); toast('Tugas dihapus');
+};
+const bumpSubtask = id => {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  if (t.done >= t.total) { t.done = 0; save(); return render(); }   // reset siklus
+  t.done++;
+  if (t.done === t.total && t.status !== 'done') { t.done--; return moveTask(id, 'done'); }
+  save(); render();
+};
