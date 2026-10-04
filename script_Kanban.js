@@ -221,7 +221,7 @@ const renderCourses = () => {
 // Navigasi antar layar
 const TITLES = {
   board: ['Papan Tugas', () => new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })],
-  stat: ['Statistik', () => 'Ringkasan progres tugas semester 5'],
+  stat: ['Statistik', () => 'Ringkasan progress tugas semester 3'],
   course: ['Mata Kuliah', () => `${new Set(tasks.map(t => t.course)).size} mata kuliah semester ini`],
 };
 const render = () => {
