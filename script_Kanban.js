@@ -329,3 +329,12 @@ function openMove(id) {
   moveDlg.showModal();
 }
 
+// Event lain
+$('#btnAdd').addEventListener('click', () => openAdd());
+$('#fab').addEventListener('click', () => openAdd(view === 'board' ? activeTab : 'todo'));
+$('#btnCancel').addEventListener('click', () => addDlg.close());
+$('#moveClose').addEventListener('click', () => moveDlg.close());
+$('#search').addEventListener('input', e => { query = e.target.value.trim().toLowerCase(); render(); });
+[addDlg, moveDlg].forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+
+render();
