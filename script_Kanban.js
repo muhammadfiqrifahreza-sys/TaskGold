@@ -176,3 +176,44 @@ const renderStatistik = () => {
     return li;
   }) : [el('li', 'empty-note', 'Tidak ada deadline. Semua tugas selesai!')]));
 };
+
+// Render: Mata Kuliah
+const renderCourses = () => {
+  const names = [...new Set(tasks.map(t => t.course))];
+  $('#courses').replaceChildren(...names.map(name => {
+    const list = tasks.filter(t => t.course === name);
+    const done = list.filter(t => t.status === 'done').length;
+    const next = list.filter(t => t.status !== 'done').sort((a, b) => a.due.localeCompare(b.due))[0];
+    const card = el('article', 'course');
+
+    const head = el('header');
+    head.append(el('h3', '', name), el('span', '', `${list.length} tugas`));
+    const bar = el('div', 'bar'), fillBar = el('i');
+    fillBar.style.setProperty('--p', `${(done / list.length) * 100}%`);
+    bar.append(fillBar);
+
+    const mini = el('div', 'mini');
+    Object.entries(STATUS).forEach(([k, label]) => {
+      const s = el('span'), dot = el('i', 'dot');
+      dot.style.setProperty('--c', COLOR[k]);
+      s.append(dot, `${list.filter(t => t.status === k).length} ${label}`);
+      mini.append(s);
+    });
+
+    const ul = el('ul');
+    list.forEach(t => {
+      const li = el('li', t.status === 'done' ? 'done' : ''), dot = el('i', 'dot');
+      dot.style.setProperty('--c', COLOR[t.status]);
+      li.append(dot, el('span', '', t.title), el('small', '', fmtDate(t.due)));
+      ul.append(li);
+    });
+
+    const btn = el('button', 'btn ghost-btn', 'Lihat di papan');
+    btn.type = 'button';
+    btn.dataset.course = name;
+    card.append(head, bar, mini,
+      el('p', `next${next ? '' : ' ok'}`, next ? `Tenggat terdekat: ${fmtDate(next.due)}` : 'Semua tugas selesai'),
+      ul, btn);
+    return card;
+  }));
+};
