@@ -25,3 +25,28 @@ let tasks = read(STORAGE_KEY, seedTasks);
 const save = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 
 let view = 'board', filterCourse = 'Semua', query = '', activeTab = 'todo';
+
+/* ===== Helpers ===== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const toDate = iso => new Date(iso + 'T00:00:00');
+const fmtDate = iso => toDate(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+const daysLeft = iso => Math.round((toDate(iso) - new Date().setHours(0, 0, 0, 0)) / 864e5);
+const el = (tag, cls, text) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
+};
+const visible = t =>
+  (filterCourse === 'Semua' || t.course === filterCourse) &&
+  (t.title + ' ' + t.course).toLowerCase().includes(query);
+
+let toastTimer;
+const toast = msg => {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+};
