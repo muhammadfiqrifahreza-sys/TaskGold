@@ -149,7 +149,7 @@ input:focus,select:focus{border-color:var(--gold);outline:none}
 @media (max-width:720px){
   body{grid-template-columns:1fr;padding-bottom:84px}
   .sidebar{position:fixed;top:auto;bottom:0;left:0;right:0;height:auto;z-index:10;padding:8px;flex-direction:row;border-top:1px solid var(--line)}
-  .logo,.profile{display:none}
+  .logo{display:none}
   nav{flex-direction:row;justify-content:space-around}
   nav a{font-size:11px;padding:10px 8px}
   .app{padding:20px 16px}
