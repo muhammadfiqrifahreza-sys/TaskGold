@@ -29,6 +29,36 @@
         <button class="btn primary" id="btnAdd" type="button">+ Tambah Tugas</button>
       </div>
     </header>
+
+    <main>
+      <!-- Papan Tugas -->
+      <section class="view" id="view-board" aria-label="Papan Tugas">
+        <div class="stats"></div>
+        <section class="filters" aria-label="Filter mata kuliah">
+          <span>Mata kuliah</span><div id="chips" class="chips"></div>
+        </section>
+
+        <div class="tabs" id="tabs" role="tablist" aria-label="Status tugas"></div>
+        <section class="board" id="board" aria-label="Papan kanban">
+          <article class="column" data-status="todo" aria-labelledby="h-todo">
+            <header><h2 id="h-todo"><i class="dot"></i>To Do</h2><span class="count"></span></header>
+            <div class="list" data-status="todo"></div>
+            <button class="ghost" type="button" data-add="todo">+ Tambah kartu</button>
+          </article>
+
+          <article class="column" data-status="prog" aria-labelledby="h-prog">
+            <header><h2 id="h-prog"><i class="dot"></i>In Progress</h2><span class="count"></span></header>
+            <div class="list" data-status="prog"></div>
+            <button class="ghost" type="button" data-add="prog">+ Tambah kartu</button>
+          </article>
+
+          <article class="column" data-status="done" aria-labelledby="h-done">
+            <header><h2 id="h-done"><i class="dot"></i>Done</h2><span class="count"></span></header>
+            <div class="list" data-status="done"></div>
+            <button class="ghost" type="button" data-add="done">+ Tambah kartu</button>
+          </article>
+        </section>
+      </section>
     
 </body>
 </html>
