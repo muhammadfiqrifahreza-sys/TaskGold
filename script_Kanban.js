@@ -74,3 +74,73 @@ const bumpSubtask = id => {
   if (t.done === t.total && t.status !== 'done') { t.done--; return moveTask(id, 'done'); }
   save(); render();
 };
+
+/* ===== Render: Papan Tugas ===== */
+const buildCard = t => {
+  const card = el('article', `card${t.status === 'done' ? ' is-done' : ''}`);
+  card.draggable = true;
+  card.dataset.id = t.id;
+  card.append(el('h3', '', t.title), el('p', '', t.course));
+
+  const bar = el('div', 'bar'), fillBar = el('i');
+  fillBar.style.setProperty('--p', `${(t.done / t.total) * 100}%`);
+  bar.append(fillBar);
+
+  const left = daysLeft(t.due), late = t.status !== 'done' && left < 0;
+  const meta = el('div', 'meta');
+  meta.append(el('span', late ? 'late' : '', late ? `Terlambat ${-left} hari` : `Tenggat ${fmtDate(t.due)}`),
+              el('span', '', `${t.done}/${t.total} subtugas`));
+
+  const tools = el('div', 'tools');
+  const mk = (txt, action, cls = '') => { const b = el('button', cls, txt); b.type = 'button'; b.dataset.action = action; return b; };
+  tools.append(mk('+ Subtugas', 'bump'), mk('Pindah', 'move'), mk('Hapus', 'delete', 'del'));
+  card.append(bar, meta, tools);
+  return card;
+};
+
+const statCards = () => {
+  const n = s => tasks.filter(t => t.status === s).length;
+  const data = [
+    [tasks.length, 'Total Tugas', ''],
+    [n('prog'), 'In Progress', ''],
+    [n('done'), 'Selesai', ''],
+    [tasks.filter(t => t.status !== 'done' && daysLeft(t.due) <= 3).length, 'Deadline < 3 hari', 'warn'],
+  ];
+  $$('.stats').forEach(box => box.replaceChildren(...data.map(([v, l, c]) => {
+    const a = el('article', `stat ${c}`);
+    a.append(el('b', '', v), el('span', '', l));
+    return a;
+  })));
+};
+
+const renderChips = () => {
+  const courses = ['Semua', ...new Set(tasks.map(t => t.course))];
+  if (!courses.includes(filterCourse)) filterCourse = 'Semua';
+  $('#chips').replaceChildren(...courses.map(c => {
+    const b = el('button', 'chip', c);
+    b.type = 'button';
+    b.setAttribute('aria-pressed', c === filterCourse);
+    b.addEventListener('click', () => { filterCourse = c; render(); });
+    return b;
+  }));
+  $('#courseList').replaceChildren(...courses.slice(1).map(c => { const o = el('option'); o.value = c; return o; }));
+};
+
+const renderBoard = () => {
+  Object.keys(STATUS).forEach(status => {
+    const items = tasks.filter(t => t.status === status && visible(t));
+    const col = $(`.column[data-status="${status}"]`), list = $('.list', col);
+    list.replaceChildren(...items.map(buildCard));
+    if (!items.length) list.append(el('p', 'empty', 'Belum ada tugas di sini.'));
+    $('.count', col).textContent = items.length;
+    col.classList.toggle('current', status === activeTab);
+  });
+  $('#tabs').replaceChildren(...Object.entries(STATUS).map(([key, label]) => {
+    const b = el('button', '', `${label} ${tasks.filter(t => t.status === key && visible(t)).length}`);
+    b.type = 'button';
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-selected', key === activeTab);
+    b.addEventListener('click', () => { activeTab = key; render(); });
+    return b;
+  }));
+};
